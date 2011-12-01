@@ -3,7 +3,7 @@
   (:use clojure.walk
         [expectations :only [doexpect fail test-file stack->file&line report]]))
 
-(def ^:dynamic *interactions*)
+(def  *interactions*)
 (def in expectations/in)
 
 (defmacro given [bindings form & args]
@@ -16,7 +16,7 @@
 
 (defmacro stubbing [bindings & forms]
   (let [new-bindings (reduce (fn [a [x y]] (conj a x `(fn [& _#] ~y))) [] (partition 2 bindings))]
-    `(with-redefs ~new-bindings ~@forms)))
+    `(binding ~new-bindings ~@forms)))
 
 (defmacro expect [& args]
   (condp = (count args)
@@ -68,7 +68,7 @@
       (reduce into []))))
 
 (defmacro localize-state [ns & forms]
-  `(with-redefs ~(default-local-vals ns) ~@forms))
+  `(binding ~(default-local-vals ns) ~@forms))
 
 (defmacro doscenario [forms & {declarative-binds :binding
                                declarative-stubs :stubbing
@@ -80,9 +80,9 @@
        (localize-state ~declarative-localize-state
          (stubbing ~(vec declarative-stubs)
            (binding [expectations/reminder ~reminder]
-             (with-redefs ~(vec declarative-binds)
+             (binding ~(vec declarative-binds)
                (binding [*interactions* (ref {})]
-                 (with-redefs ~binds
+                 (binding ~binds
                    ~@forms))))))
        (catch Throwable t#
          (report {:type :error :result t#})))))

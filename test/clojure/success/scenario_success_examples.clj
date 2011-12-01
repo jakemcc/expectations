@@ -33,7 +33,7 @@
         identity 2))))
 
 (scenario
-  (with-redefs [bar2 no-op]
+  (binding [bar2 no-op]
     (expect nil? (bar2 3 4))))
 
 (scenario

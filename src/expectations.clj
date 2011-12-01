@@ -6,16 +6,16 @@
 ;;; GLOBALS
 (def run-tests-on-shutdown (atom true))
 
-(def ^:dynamic *test-name* "test name unset")
-(def ^:dynamic *test-meta* {})
-(def ^:dynamic *prune-stacktrace* true)
+(def  *test-name* "test name unset")
+(def  *test-meta* {})
+(def  *prune-stacktrace* true)
 
-(def ^:dynamic *report-counters* nil) ; bound to a ref of a map in test-ns
+(def  *report-counters* nil) ; bound to a ref of a map in test-ns
 
-(def ^:dynamic *initial-report-counters* ; used to initialize *report-counters*
+(def  *initial-report-counters* ; used to initialize *report-counters*
   {:test 0, :pass 0, :fail 0, :error 0 :run-time 0})
 
-(def ^:dynamic reminder nil)
+(def  reminder nil)
 
 ;;; UTILITIES FOR REPORTING FUNCTIONS
 (defn string-join [s coll]
@@ -40,14 +40,14 @@
 (defn raw-str [[e a]]
   (str "(expect " e (when (> (count e) 30) "\n                  ") " " a ")"))
 
-(defn ^:dynamic fail [test-name test-meta msg]
+(defn  fail [test-name test-meta msg]
   (println (str "\nfailure in (" (test-file test-meta) ") : " (:ns test-meta))) (println msg))
 
-(defn ^:dynamic summary [msg] (println msg))
-(defn ^:dynamic started [test-name test-meta])
-(defn ^:dynamic finished [test-name test-meta])
+(defn  summary [msg] (println msg))
+(defn  started [test-name test-meta])
+(defn  finished [test-name test-meta])
 
-(defn ^:dynamic ignored-fns [{:keys [className fileName]}]
+(defn  ignored-fns [{:keys [className fileName]}]
   (when *prune-stacktrace*
     (or (= fileName "expectations.clj")
       (re-seq #"clojure.lang" className)
