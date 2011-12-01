@@ -4,7 +4,7 @@
   :java-source-path "src"
   :test-path "test/clojure"
   :dev-dependencies [[lein-expectations "0.0.1"]]
-  :dependencies [[org.clojure/clojure "1.2.0"]
+  :dependencies [[org.clojure/clojure "1.2.1"]
                  [junit/junit "4.8.1"]])
 
 (ns leiningen.publish
